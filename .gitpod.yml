@@ -8,3 +8,11 @@ tasks:
       unzip awscliv2.zip
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
+    command: echo "AWS CLI is installed and ready to use."
+
+  - name: Setup SSH
+    command: |
+      mkdir -p ~/.ssh
+      echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+      chmod 600 ~/.ssh/id_ed25519
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
