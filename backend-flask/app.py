@@ -43,6 +43,8 @@ RequestsInstrumentor().instrument()
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
+print(f"[ENV] FRONTEND_URL: {frontend}")
+print(f"[ENV] BACKEND_URL: {backend}")
 origins = [frontend, backend]
 cors = CORS(
   app, 
@@ -52,7 +54,10 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 
-@app.route("/api/message_groups", methods=['GET'])
+@app.before_request
+def log_request_info():
+  print(f"[REQUEST] {request.method} {request.path}")
+
 def data_message_groups():
   user_handle  = 'andrewbrown'
   model = MessageGroups.run(user_handle=user_handle)
@@ -148,4 +153,5 @@ def data_activities_reply(activity_uuid):
   return
 
 if __name__ == "__main__":
-  app.run(debug=True)
+ #app.run(debug=True)
+ app.run(debug=True, host='0.0.0.0', port=4567)
